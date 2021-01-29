@@ -5,10 +5,6 @@ import Likes from "./Likes";
 import MessageList from "./MessageList";
 
 class ProductList extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   //when I am first mounted, i need to call...
   componentDidMount() {
     //do something

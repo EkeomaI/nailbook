@@ -1,44 +1,82 @@
 import React from "react";
+import { LikedIcon, UnLikedIcon, LikeIcon } from "./LikeIcon";
 
 class Likes extends React.Component {
   constructor(props) {
     super(props);
-    this.numberOfLikesRef = React.createRef();
-    this.state = { numberOfLikes: this.props.product.likes, productId: "" };
+    this.state = { numberOfLikes: this.props.product.likes, isLiked: null };
   }
-  componentDidUpdate() {}
 
-  updateNumberOfLikes = (id, e) => {
+  onLike(id, e) {
     e.preventDefault();
     e.stopPropagation();
-
+    //console.log("liked called");
     this.setState(
       (state) => {
-        return { numberOfLikes: state.numberOfLikes + 1 };
+        return {
+          numberOfLikes: state.numberOfLikes + 1,
+          isLiked: !state.isLiked,
+        };
       },
       () => {
-        //console.log(this.state.numberOfLikes);
         this.props.onLikeClick(this.state.numberOfLikes, id);
       }
     );
-
-    //console.log(this.numberOfLikesRef.current);
-  };
-
+  }
+  onUnLike(id, e) {
+    e.preventDefault();
+    e.stopPropagation();
+    //console.log("unliked called");
+    this.setState(
+      (state) => {
+        return {
+          numberOfLikes: state.numberOfLikes - 1,
+          isLiked: !state.isLiked,
+        };
+      },
+      () => {
+        this.props.onLikeClick(this.state.numberOfLikes, id);
+      }
+    );
+  }
   render() {
-    //console.log(this.state.numberOfLikes);
+    const isLikedToggle = this.state.isLiked;
+    //console.log(isLikedToggle);
+    //console.log("render called");
+    let likes;
+    switch (isLikedToggle) {
+      case false:
+        likes = (
+          <LikedIcon
+            product={this.props.product}
+            onClick={(e) => this.onLike(this.props.product.id, e)}
+          />
+        );
+        break;
+      case true:
+        likes = (
+          <UnLikedIcon
+            product={this.props.product}
+            onClick={(e) => this.onUnLike(this.props.product.id, e)}
+          />
+        );
+        break;
+      default:
+        likes = (
+          <LikeIcon
+            product={this.props.product}
+            onClick={(e) => {
+              this.onLike(this.props.product.id, e);
+            }}
+          />
+        );
+        break;
+    }
+
     return (
       <React.Fragment>
         <div className="content">
-          <span
-            onClick={(e) => this.updateNumberOfLikes(this.props.product.id, e)}
-            ref={this.numberOfLikesRef}
-            className="right floated"
-          >
-            <i className="heart outline like icon"></i>
-            {`${this.props.product.likes} likes`}
-          </span>
-
+          {likes}
           <i className="comment icon"></i>
           {`${this.props.product.comments.length} messages`}
         </div>

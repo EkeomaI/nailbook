@@ -14,6 +14,9 @@ export default function timeConverter(previousTimeStamp) {
   let numberOfMinutes = Math.floor(numberOfSec / 60);
   let numberOfSeconds = numberOfSec;
 
+  if (numberOfSeconds < 1) {
+    return "Just now";
+  }
   if (numberOfSeconds < 60) {
     return numberOfSeconds.toString() + " s";
   }

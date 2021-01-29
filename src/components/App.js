@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Router, Switch, Route } from "react-router-dom";
 import DashBoard from "./DashBoard";
 import Preferences from "./Preferences";
